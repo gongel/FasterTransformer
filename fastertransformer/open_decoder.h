@@ -232,8 +232,8 @@ namespace fastertransformer {
                               norm_from_tensor_buf_,
                               m,
                               n);
-                print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,from_tensor,"from tensor")
-                print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,norm_from_tensor_buf_,"from tensor after decoder_norm1")
+                print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,from_tensor,"from tensor");
+                print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,norm_from_tensor_buf_,"from tensor after decoder_norm1");
 
 #ifndef NDEBUG
                     cudaDeviceSynchronize();
