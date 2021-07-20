@@ -213,7 +213,7 @@ namespace fastertransformer
                 cudaMemcpyAsync((void *)qkv_kernel_, hA, sizeof(DataType_ *) * 9, cudaMemcpyHostToDevice, param_.stream);
             }
         }
-        void print_tensor(int &dim, const DataType_ * tensor, std::string &output) {
+        void print_tensor(int dim, const DataType_ * tensor, std::string output) {
             float *data = new float[dim];
             cudaMemcpy(data, tensor, sizeof(float) * dim,
                        cudaMemcpyDeviceToHost);
