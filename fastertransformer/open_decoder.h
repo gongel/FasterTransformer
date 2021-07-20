@@ -98,6 +98,11 @@ namespace fastertransformer
                                                max_seq_len_(seq_len), head_num_(head_num),
                                                size_per_head_(size_per_head),
                                                memory_hidden_units_(memory_hidden_units)
+        std::cout<<"batch_size_"<<batch_size<<std::endl;
+        std::cout<<"max_seq_len_"<<seq_len<<std::endl;
+        std::cout<<"head_num_"<<head_num<<std::endl;
+        std::cout<<"size_per_head_"<<size_per_head<<std::endl;
+        std::cout<<"memory_hidden_units_"<<memory_hidden_units<<std::endl;
         {
 #ifndef NDEBUG
             PRINT_FUNC_NAME_();
@@ -206,6 +211,16 @@ namespace fastertransformer
                 cudaMemcpyAsync((void *)qkv_kernel_, hA, sizeof(DataType_ *) * 9, cudaMemcpyHostToDevice, param_.stream);
             }
         }
+        void print_tensor(int &dim, float &tensor, string &output) {
+            float *data = new float[dim];
+            cudaMemcpy(data, tensor, sizeof(float) * dim,
+                       cudaMemcpyDeviceToHost);
+            float sum = 0.0f;
+            for (int i = 0; i < dim; ++i) {
+                sum += data[i];
+                std::cout << output << ", sum: " << sum << ", mean: " << sum / dim << std::endl;
+            }
+        }
 
         void forward(const DataType_ *from_tensor, const DataType_ *memory_tensor,
                      DataType_ *key_cache_, DataType_ *value_cache_,
@@ -229,6 +244,8 @@ namespace fastertransformer
                               norm_from_tensor_buf_,
                               m,
                               n);
+                print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,from_tensor,"from tensor");
+                print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,norm_from_tensor_buf_,"from tensor after decoder_norm1");
 
 #ifndef NDEBUG
                 cudaDeviceSynchronize();
