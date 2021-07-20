@@ -108,7 +108,7 @@ namespace fastertransformer
             std::cout<<"head_num_"<<head_num<<std::endl;
             std::cout<<"size_per_head_"<<size_per_head<<std::endl;
             std::cout<<"memory_hidden_units_"<<memory_hidden_units<<std::endl;
-            
+
             hidden_units_ = head_num_ * size_per_head_;
 
             FILE *fd = fopen("decoding_gemm_config.in", "r");
@@ -213,7 +213,7 @@ namespace fastertransformer
                 cudaMemcpyAsync((void *)qkv_kernel_, hA, sizeof(DataType_ *) * 9, cudaMemcpyHostToDevice, param_.stream);
             }
         }
-        void print_tensor(int &dim, float &tensor, string &output) {
+        void print_tensor(int &dim, float &tensor, std::string &output) {
             float *data = new float[dim];
             cudaMemcpy(data, tensor, sizeof(float) * dim,
                        cudaMemcpyDeviceToHost);
