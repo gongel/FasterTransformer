@@ -24,6 +24,7 @@
 #include <assert.h>
 #include <cuda_runtime.h>
 #include <cuda_fp16.h>
+#include <string>
 
 namespace fastertransformer
 {
@@ -98,15 +99,16 @@ namespace fastertransformer
                                                max_seq_len_(seq_len), head_num_(head_num),
                                                size_per_head_(size_per_head),
                                                memory_hidden_units_(memory_hidden_units)
-        std::cout<<"batch_size_"<<batch_size<<std::endl;
-        std::cout<<"max_seq_len_"<<seq_len<<std::endl;
-        std::cout<<"head_num_"<<head_num<<std::endl;
-        std::cout<<"size_per_head_"<<size_per_head<<std::endl;
-        std::cout<<"memory_hidden_units_"<<memory_hidden_units<<std::endl;
         {
 #ifndef NDEBUG
             PRINT_FUNC_NAME_();
 #endif
+            std::cout<<"batch_size_"<<batch_size<<std::endl;
+            std::cout<<"max_seq_len_"<<seq_len<<std::endl;
+            std::cout<<"head_num_"<<head_num<<std::endl;
+            std::cout<<"size_per_head_"<<size_per_head<<std::endl;
+            std::cout<<"memory_hidden_units_"<<memory_hidden_units<<std::endl;
+            
             hidden_units_ = head_num_ * size_per_head_;
 
             FILE *fd = fopen("decoding_gemm_config.in", "r");
