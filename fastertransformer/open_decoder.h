@@ -260,6 +260,7 @@ namespace fastertransformer
                 check_cuda_error(cudaGetLastError());
 #endif
                 masked_multi_head_attention(norm_from_tensor_buf_, key_cache_, value_cache_, masked_output_buf_, step);
+                print_tensor(batch_size_*1*head_num_*size_per_head_,masked_output_buf_,"masked_multi_head_attention.txt");
 
 #ifndef NDEBUG
                 cudaDeviceSynchronize();
@@ -279,6 +280,8 @@ namespace fastertransformer
                                   param_.self_attention.attention_output_weight.bias,
                                   masked_output_buf_,
                                   norm_masked_output_buf_, m, n);
+                    print_tensor(batch_size_*1*head_num_*size_per_head_,norm_masked_output_buf_,"norm_masked_output_buf_decoder_norm2.txt");
+
 #ifndef NDEBUG
                     cudaDeviceSynchronize();
                     check_cuda_error(cudaGetLastError());
@@ -288,6 +291,8 @@ namespace fastertransformer
                     cross_multi_head_attention(norm_masked_output_buf_, memory_tensor,
                                                key_mem_cache_, value_mem_cache_, cross_output_buf_,
                                                memory_sequence_length, max_seq_len_, step);
+                    print_tensor(batch_size_*1*head_num_*size_per_head_,cross_output_buf_,"cross_output_buf.txt");
+
 #ifndef NDEBUG
                     cudaDeviceSynchronize();
                     check_cuda_error(cudaGetLastError());
