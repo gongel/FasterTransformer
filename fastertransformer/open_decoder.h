@@ -225,7 +225,7 @@ namespace fastertransformer
                 sum += data[i];
             }
             f<<"sum: " << sum << ", mean: " << sum / dim << std::endl;
-            f.close()
+            f.close();
 //            std::cout << output << ", sum: " << sum << ", mean: " << sum / dim << std::endl;
         }
 
