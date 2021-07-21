@@ -215,7 +215,7 @@ namespace fastertransformer
                 cudaMemcpyAsync((void *)qkv_kernel_, hA, sizeof(DataType_ *) * 9, cudaMemcpyHostToDevice, param_.stream);
             }
         }
-        void print_tensor(int dim, const DataType_ * tensor, std::string output) {
+        void print_tensor(int dim, const DataType_ * tensor, std::string output, bool everyone=false) {
             float *data = new float[dim];
             cudaMemcpy(data, tensor, sizeof(float) * dim,
                        cudaMemcpyDeviceToHost);
@@ -223,6 +223,8 @@ namespace fastertransformer
             float sum = 0.0f;
             for (int i = 0; i < dim; ++i) {
                 sum += data[i];
+                if(everyone)
+                    f<< data[i] << std::endl;
             }
             f<<"sum: " << sum << ", mean: " << sum / dim << std::endl;
             f.close();
@@ -291,7 +293,7 @@ namespace fastertransformer
                     cross_multi_head_attention(norm_masked_output_buf_, memory_tensor,
                                                key_mem_cache_, value_mem_cache_, cross_output_buf_,
                                                memory_sequence_length, max_seq_len_, step);
-                    print_tensor(batch_size_*1*head_num_*size_per_head_,cross_output_buf_,"cross_output_buf.txt");
+                    print_tensor(batch_size_*1*head_num_*size_per_head_,cross_output_buf_,"cross_output_buf.txt",true);
 
 #ifndef NDEBUG
                     cudaDeviceSynchronize();
