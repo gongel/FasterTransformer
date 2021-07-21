@@ -247,7 +247,7 @@ namespace fastertransformer
             {
                 /* masked multi-head attention */
                 /* layernorm(from_tensor) -> norm_from_tensor_buf_ */
-                print_tensor(batch_size_*1*head_num_*size_per_head_,from_tensor,"from_tensor.txt");
+                print_tensor(batch_size_*1*head_num_*size_per_head_,from_tensor,"from_tensor.txt",true);
 
                 decoder_norm1(from_tensor,
                               param_.self_layernorm.gamma,
@@ -258,7 +258,7 @@ namespace fastertransformer
                 print_tensor(head_num_*size_per_head_,param_.self_layernorm.gamma,"norm1_gamma.txt",true);
                 print_tensor(head_num_*size_per_head_,param_.self_layernorm.beta,"norm1_beta.txt",true);
 
-                print_tensor(batch_size_*1*head_num_*size_per_head_,norm_from_tensor_buf_,"from_tensor_after_decoder_norm1.txt");
+                print_tensor(batch_size_*1*head_num_*size_per_head_,norm_from_tensor_buf_,"from_tensor_after_decoder_norm1.txt",true);
 
 #ifndef NDEBUG
                 cudaDeviceSynchronize();
