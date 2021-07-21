@@ -25,6 +25,8 @@
 #include <cuda_runtime.h>
 #include <cuda_fp16.h>
 #include <string>
+#include <iostream>
+#include <fstream>
 
 namespace fastertransformer
 {
@@ -217,11 +219,14 @@ namespace fastertransformer
             float *data = new float[dim];
             cudaMemcpy(data, tensor, sizeof(float) * dim,
                        cudaMemcpyDeviceToHost);
+            std::fstream f(output, std::ios::out);
             float sum = 0.0f;
             for (int i = 0; i < dim; ++i) {
                 sum += data[i];
-                std::cout << output << ", sum: " << sum << ", mean: " << sum / dim << std::endl;
             }
+            f<<"sum: " << sum << ", mean: " << sum / dim << std::endl;
+            f.close()
+//            std::cout << output << ", sum: " << sum << ", mean: " << sum / dim << std::endl;
         }
 
         void forward(const DataType_ *from_tensor, const DataType_ *memory_tensor,
@@ -246,8 +251,8 @@ namespace fastertransformer
                               norm_from_tensor_buf_,
                               m,
                               n);
-                print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,from_tensor,"from tensor");
-                print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,norm_from_tensor_buf_,"from tensor after decoder_norm1");
+                print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,from_tensor,"from_tensor.txt");
+                print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,norm_from_tensor_buf_,"from_tensor_after_decoder_norm1.txt");
 
 #ifndef NDEBUG
                 cudaDeviceSynchronize();
