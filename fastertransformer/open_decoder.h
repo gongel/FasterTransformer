@@ -255,6 +255,9 @@ namespace fastertransformer
                               norm_from_tensor_buf_,
                               m,
                               n);
+                print_tensor(head_num_*size_per_head_,param_.self_layernorm.gamma,"norm1_gamma.txt");
+                print_tensor(head_num_*size_per_head_,param_.self_layernorm.beta,"norm1_beta.txt");
+
                 print_tensor(batch_size_*1*head_num_*size_per_head_,norm_from_tensor_buf_,"from_tensor_after_decoder_norm1.txt");
 
 #ifndef NDEBUG
