@@ -220,6 +220,10 @@ namespace fastertransformer
             cudaMemcpy(data, tensor, sizeof(float) * dim,
                        cudaMemcpyDeviceToHost);
             std::fstream f(output, std::ios::out);
+            //设置打印精度，保留小数点后面16位
+            f.setf(std::ios::fixed);
+            f.setf(std::ios::showpoint);
+            f.precision(16);
             double sum = 0.0f;
             for (int i = 0; i < dim; ++i) {
                 sum += data[i];
