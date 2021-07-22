@@ -297,6 +297,9 @@ namespace fastertransformer
 #endif
                     // For Attention is All You Need decoder
                     /* cross attention with memory */
+                    print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,key_mem_cache_,"cpp_key_mem_cache_before_cross.txt");
+                    print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,value_mem_cache_,"cpp_value_mem_cache_before_cross.txt");
+
                     cross_multi_head_attention(norm_masked_output_buf_, memory_tensor,
                                                key_mem_cache_, value_mem_cache_, cross_output_buf_,
                                                memory_sequence_length, max_seq_len_, step);
