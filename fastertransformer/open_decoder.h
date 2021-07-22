@@ -220,7 +220,7 @@ namespace fastertransformer
             cudaMemcpy(data, tensor, sizeof(float) * dim,
                        cudaMemcpyDeviceToHost);
             std::fstream f(output, std::ios::out);
-            double sum = 0.0f;
+            float sum = 0.0f;
             for (int i = 0; i < dim; ++i) {
                 sum += data[i];
                 if(everyone)
