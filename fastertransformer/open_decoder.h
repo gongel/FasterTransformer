@@ -224,7 +224,7 @@ namespace fastertransformer
             f.setf(std::ios::fixed);
             f.setf(std::ios::showpoint);
             f.precision(16);
-            double sum = 0.0f;
+            float sum = 0.0f;
             for (int i = 0; i < dim; ++i) {
                 sum += data[i];
                 if(everyone)
@@ -251,7 +251,7 @@ namespace fastertransformer
             {
                 /* masked multi-head attention */
                 /* layernorm(from_tensor) -> norm_from_tensor_buf_ */
-                print_tensor(batch_size_*1*head_num_*size_per_head_,from_tensor,"from_tensor.txt",true);
+                print_tensor(batch_size_*1*head_num_*size_per_head_,from_tensor,"cpp_from_tensor.txt");
 
                 decoder_norm1(from_tensor,
                               param_.self_layernorm.gamma,
@@ -259,17 +259,17 @@ namespace fastertransformer
                               norm_from_tensor_buf_,
                               m,
                               n);
-                print_tensor(head_num_*size_per_head_,param_.self_layernorm.gamma,"norm1_gamma.txt",true);
-                print_tensor(head_num_*size_per_head_,param_.self_layernorm.beta,"norm1_beta.txt",true);
+                print_tensor(head_num_*size_per_head_,param_.self_layernorm.gamma,"cpp_norm1_gamma.txt");
+                print_tensor(head_num_*size_per_head_,param_.self_layernorm.beta,"cpp_norm1_beta.txt");
 
-                print_tensor(batch_size_*1*head_num_*size_per_head_,norm_from_tensor_buf_,"from_tensor_after_decoder_norm1.txt",true);
+                print_tensor(batch_size_*1*head_num_*size_per_head_,norm_from_tensor_buf_,"cpp_from_tensor_after_decoder_norm1.txt");
 
 #ifndef NDEBUG
                 cudaDeviceSynchronize();
                 check_cuda_error(cudaGetLastError());
 #endif
                 masked_multi_head_attention(norm_from_tensor_buf_, key_cache_, value_cache_, masked_output_buf_, step);
-                print_tensor(batch_size_*1*head_num_*size_per_head_,masked_output_buf_,"masked_multi_head_attention.txt");
+                print_tensor(batch_size_*1*head_num_*size_per_head_,masked_output_buf_,"cpp_masked_multi_head_attention.txt");
 
 #ifndef NDEBUG
                 cudaDeviceSynchronize();
@@ -289,7 +289,7 @@ namespace fastertransformer
                                   param_.self_attention.attention_output_weight.bias,
                                   masked_output_buf_,
                                   norm_masked_output_buf_, m, n);
-                    print_tensor(batch_size_*1*head_num_*size_per_head_,norm_masked_output_buf_,"norm_masked_output_buf_decoder_norm2.txt");
+                    print_tensor(batch_size_*1*head_num_*size_per_head_,norm_masked_output_buf_,"cpp_norm_masked_output_buf_decoder_norm2.txt");
 
 #ifndef NDEBUG
                     cudaDeviceSynchronize();
@@ -300,7 +300,13 @@ namespace fastertransformer
                     cross_multi_head_attention(norm_masked_output_buf_, memory_tensor,
                                                key_mem_cache_, value_mem_cache_, cross_output_buf_,
                                                memory_sequence_length, max_seq_len_, step);
-                    print_tensor(batch_size_*1*head_num_*size_per_head_,cross_output_buf_,"cross_output_buf.txt",true);
+                    std::cout<<"memory_sequence_length"<<memory_sequence_length<<std::endl;
+                    std::cout<<"max_seq_len_"<<max_seq_len_<<std::endl;
+                    print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,cross_output_buf_,"cpp_memory_tensor.txt");
+                    print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,key_mem_cache_,"cpp_key_mem_cache.txt");
+                    print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,value_mem_cache_,"cpp_value_mem_cache.txt");
+
+                    print_tensor(batch_size_*1*head_num_*size_per_head_,cross_output_buf_,"cpp_cross_output_buf.txt");
 
 #ifndef NDEBUG
                     cudaDeviceSynchronize();
