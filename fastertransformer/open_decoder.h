@@ -105,11 +105,11 @@ namespace fastertransformer
 #ifndef NDEBUG
             PRINT_FUNC_NAME_();
 #endif
-            std::cout<<"batch_size_"<<batch_size<<std::endl;
-            std::cout<<"max_seq_len_"<<seq_len<<std::endl;
-            std::cout<<"head_num_"<<head_num<<std::endl;
-            std::cout<<"size_per_head_"<<size_per_head<<std::endl;
-            std::cout<<"memory_hidden_units_"<<memory_hidden_units<<std::endl;
+            std::cout<<"batch_size_ "<<batch_size<<std::endl;
+            std::cout<<"max_seq_len_ "<<seq_len<<std::endl;
+            std::cout<<"head_num_ "<<head_num<<std::endl;
+            std::cout<<"size_per_head_ "<<size_per_head<<std::endl;
+            std::cout<<"memory_hidden_units_ "<<memory_hidden_units<<std::endl;
 
             hidden_units_ = head_num_ * size_per_head_;
 
@@ -303,7 +303,7 @@ namespace fastertransformer
                     cross_multi_head_attention(norm_masked_output_buf_, memory_tensor,
                                                key_mem_cache_, value_mem_cache_, cross_output_buf_,
                                                memory_sequence_length, max_seq_len_, step);
-                    std::cout<<"memory_sequence_length"<<memory_sequence_length<<std::endl;
+                    std::cout<<"memory_sequence_length"<<*memory_sequence_length<<std::endl;
                     std::cout<<"max_seq_len_"<<max_seq_len_<<std::endl;
                     print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,cross_output_buf_,"cpp_memory_tensor.txt");
                     print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,key_mem_cache_,"cpp_key_mem_cache.txt");
