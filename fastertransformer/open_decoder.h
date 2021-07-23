@@ -129,8 +129,7 @@ namespace fastertransformer
                 is_fuse_QKV = fused_time < split_time * 3 ? true : false;
                 fclose(fd);
             }
-            printf("is_fuse_QKV \n");
-            printf(is_fuse_QKV);
+            printf("is_fuse_QKV: %d\n",is_fuse_QKV);
             if (err != 7)
             {
                 // printf("[WARNING] decoder loading GEMM algorithms error, using default GEMM algorithms!\n");
