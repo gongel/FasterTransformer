@@ -1300,6 +1300,9 @@ void OpenDecoder<OpType_>::cross_multi_head_attention(
   print_tensor(head_num_*size_per_head_,param_.cross_attention.query_weight.bias,"cpp_params_cross_attention_query_weight_bias_in_cross.txt");
   print_tensor(head_num_*size_per_head_,param_.cross_attention.key_weight.bias,"cpp_params_cross_attention_key_weight_bias_in_cross.txt");
   print_tensor(head_num_*size_per_head_,param_.cross_attention.value_weight.bias,"cpp_params_cross_attention_value_weight_bias_in_cross.txt");
+
+  print_tensor(batch_size_*1*head_num_*size_per_head_,query_buf_,"cpp_query_buf_in_cross.txt");
+
   cross_attention_dispatch<DataType_>(
     query_buf_, param_.cross_attention.query_weight.bias, 
     key_mem_cache, param_.cross_attention.key_weight.bias,
