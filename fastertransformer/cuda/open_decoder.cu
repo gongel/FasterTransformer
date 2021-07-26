@@ -1108,6 +1108,7 @@ void cross_attention_kernel(
   int qkv_bias_id = head_id * size_per_head + tid;
 
   if(tid < size_per_head)
+      // query = q + bias
     sq[tid] = query_buf[qkv_id] + Q_bias[qkv_bias_id];
   __syncthreads();
 
@@ -1224,7 +1225,8 @@ void cross_attention_dispatch(T* query_buf, const T* Q_bias,
 
         assert(block_size <= 1024);
         dim3 block(block_size);
-        
+        float* res;
+        cudaMalloc((void *)&res, sizeof(float) * dim);
         int shared_size = sizeof(T) * (size_per_head + seq_len);
         cross_attention_kernel<T><<<grid, block, shared_size, stream>>>(
           query_buf, Q_bias, 
@@ -1296,6 +1298,10 @@ void OpenDecoder<OpType_>::cross_multi_head_attention(
 
   print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,key_mem_cache,"cpp_key_mem_cache_in_cross.txt");
   print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,value_mem_cache,"cpp_value_mem_cache_in_cross.txt");
+  
+  print_tensor(head_num_*size_per_head_,param_.cross_attention.query_weight.bias,"cpp_params_cross_attention_query_weight_bias_in_cross.txt");
+  print_tensor(head_num_*size_per_head_,param_.cross_attention.key_weight.bias,"cpp_params_cross_attention_key_weight_bias_in_cross.txt");
+  print_tensor(head_num_*size_per_head_,param_.cross_attention.value_weight.bias,"cpp_params_cross_attention_value_weight_bias_in_cross.txt");
   cross_attention_dispatch<DataType_>(
     query_buf_, param_.cross_attention.query_weight.bias, 
     key_mem_cache, param_.cross_attention.key_weight.bias,
