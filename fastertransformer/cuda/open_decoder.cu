@@ -1226,9 +1226,9 @@ void cross_attention_dispatch(T* query_buf, const T* Q_bias,
         assert(block_size <= 1024);
         dim3 block(block_size);
         int shared_size = sizeof(T) * (size_per_head + seq_len);
-        
+
         std::cout<<"*********+decoder.cu*********"<<std::endl;
-        std::cout<<"length: "<<length<<std::endl;
+        std::cout<<"length: "<<&length<<std::endl;
         std::cout<<"batch_size: "<<batch_size<<std::endl;
         std::cout<<"head_num: "<<head_num<<std::endl;
         std::cout<<"size_per_head: "<<size_per_head<<std::endl;
