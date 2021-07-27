@@ -1088,7 +1088,7 @@ void cross_attention_kernel_opt(
 template<typename T>
 void print_tensor_new(int dim, T tensor, std::string output, bool everyone=true) {
     float *data = new float[dim];
-    cudaMemcpy(data, tensor, sizeof(float) * dim,
+    cudaMemcpy(data, &tensor, sizeof(float) * dim,
                cudaMemcpyDeviceToHost);
     std::fstream f(output, std::ios::out);
     //设置打印精度，保留小数点后面16位
