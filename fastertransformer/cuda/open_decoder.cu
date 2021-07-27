@@ -1321,6 +1321,8 @@ void OpenDecoder<OpType_>::cross_multi_head_attention(
     length, context_buf_, batch_size_,
     head_num_, size_per_head_, step, seq_len, param_.stream);
 
+    print_tensor(batch_size_*1*head_num_*size_per_head_,context_buf_,"cpp_context_buf_in_cross.txt");
+
     print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,key_mem_cache,"cpp_key_mem_cache_after_cross.txt");
     print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,value_mem_cache,"cpp_value_mem_cache_after_cross.txt");
 
