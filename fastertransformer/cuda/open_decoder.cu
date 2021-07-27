@@ -1150,6 +1150,7 @@ void cross_attention_kernel(
     T val = (tid < size_per_head) ? key * sq[tid] * scalar : (T)(0.0f);
     T qk = blockReduceSum(val);
     std::cout<<"*********+cross_attention_kernel*********"<<std::endl;
+    print_tensor_new(batch_size*seq_len*head_num,qk,"cpp_qk.txt");
     std::cout<<qk<<std::endl;
     std::cout<<"*********-cross_attention_kernel*********"<<std::endl;
     if(threadIdx.x == 0)
