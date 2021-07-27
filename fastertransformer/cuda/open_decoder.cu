@@ -1085,25 +1085,26 @@ void cross_attention_kernel_opt(
   }
 }
 
-    void print_tensor_new(int dim, T tensor, std::string output, bool everyone=true) {
-        float *data = new float[dim];
-        cudaMemcpy(data, tensor, sizeof(float) * dim,
-                   cudaMemcpyDeviceToHost);
-        std::fstream f(output, std::ios::out);
-        //设置打印精度，保留小数点后面16位
-        f.setf(std::ios::fixed);
-        f.setf(std::ios::showpoint);
-        f.precision(16);
-        float sum = 0.0f;
-        for (int i = 0; i < dim; ++i) {
-            sum += data[i];
-            if(everyone)
-                f<< data[i] << std::endl;
-        }
-        f<<"sum: " << sum << ", mean: " << sum / dim << std::endl;
-        f.close();
-//            std::cout << output << ", sum: " << sum << ", mean: " << sum / dim << std::endl;
+template<typename T>
+void print_tensor_new(int dim, T tensor, std::string output, bool everyone=true) {
+    float *data = new float[dim];
+    cudaMemcpy(data, tensor, sizeof(float) * dim,
+               cudaMemcpyDeviceToHost);
+    std::fstream f(output, std::ios::out);
+    //设置打印精度，保留小数点后面16位
+    f.setf(std::ios::fixed);
+    f.setf(std::ios::showpoint);
+    f.precision(16);
+    float sum = 0.0f;
+    for (int i = 0; i < dim; ++i) {
+        sum += data[i];
+        if(everyone)
+            f<< data[i] << std::endl;
     }
+    f<<"sum: " << sum << ", mean: " << sum / dim << std::endl;
+    f.close();
+//  std::cout << output << ", sum: " << sum << ", mean: " << sum / dim << std::endl;
+}
 template<typename T>
 __global__
 void cross_attention_kernel(
