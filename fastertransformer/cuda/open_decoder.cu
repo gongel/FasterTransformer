@@ -1151,7 +1151,6 @@ void cross_attention_kernel(
     T qk = blockReduceSum(val);
     std::cout<<"*********+cross_attention_kernel*********"<<std::endl;
     print_tensor_new(batch_size*seq_len*head_num,qk,"cpp_qk.txt");
-    std::cout<<qk<<std::endl;
     std::cout<<"*********-cross_attention_kernel*********"<<std::endl;
     if(threadIdx.x == 0)
       logits[ite] = qk;
