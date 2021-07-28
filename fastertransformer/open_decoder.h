@@ -343,6 +343,7 @@ namespace fastertransformer
 
                     print_tensor(head_num_*size_per_head_,param_.ffn_layernorm.gamma,"cpp_norm3_gamma.txt");
                     print_tensor(head_num_*size_per_head_,param_.ffn_layernorm.beta,"cpp_norm3_beta.txt");
+                    print_tensor(head_num_*size_per_head_,param_.cross_attention.attention_output_weight.bias,"cpp_cross_attention.attention_output_weight.bias.txt");
 
                     decoder_norm2(masked_output_buf_,
                                   param_.ffn_layernorm.gamma,
@@ -350,22 +351,23 @@ namespace fastertransformer
                                   param_.cross_attention.attention_output_weight.bias,
                                   cross_output_buf_,
                                   norm_cross_output_buf_, m, n);
-
-                    print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,norm_cross_output_buf_,"cpp_norm_cross_output_buf.txt");
+                    print_tensor(batch_size_*1*head_num_*size_per_head_,masked_output_buf_,"cpp_masked_multi_head_attention_norm3.txt");
+                    print_tensor(batch_size_*1*head_num_*size_per_head_,cross_output_buf_,"cpp_cross_output_buf_norm3.txt");
+                    print_tensor(batch_size_*1*head_num_*size_per_head_,norm_cross_output_buf_,"cpp_norm_cross_output_buf_norm3.txt");
 
 #ifndef NDEBUG
                     cudaDeviceSynchronize();
                     check_cuda_error(cudaGetLastError());
 #endif
                     ffn(norm_cross_output_buf_, ffn_inner_buf_, decoder_output, m, 4 * n, n, ActivationType::RELU);
-                    print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,decoder_output,"cpp_decoder_output.txt");
+                    print_tensor(batch_size_*1*head_num_*size_per_head_,decoder_output,"cpp_decoder_output.txt");
 
 #ifndef NDEBUG
                     cudaDeviceSynchronize();
                     check_cuda_error(cudaGetLastError());
 #endif
                     add_bias_input(decoder_output, cross_output_buf_, m, n);
-                    print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,cross_output_buf_,"cpp_cross_output_buf_last.txt");
+                    print_tensor(batch_size_*1*head_num_*size_per_head_,cross_output_buf_,"cpp_cross_output_buf_last.txt");
 
                 }
                 else
