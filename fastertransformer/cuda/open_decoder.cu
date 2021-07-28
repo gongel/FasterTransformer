@@ -1260,7 +1260,7 @@ void cross_attention_dispatch(T* query_buf, const T* Q_bias,
         dim3 block(block_size);
         int shared_size = sizeof(T) * (size_per_head + seq_len);
 
-        std::cout<<"*********+decoder.cu*********"<<std::endl;
+        /*std::cout<<"*********+decoder.cu*********"<<std::endl;
 //        std::cout<<"length: "<<*length<<std::endl;
         std::cout<<"batch_size: "<<batch_size<<std::endl;
         std::cout<<"head_num: "<<head_num<<std::endl;
@@ -1268,7 +1268,7 @@ void cross_attention_dispatch(T* query_buf, const T* Q_bias,
         std::cout<<"step: "<<step<<std::endl;
         std::cout<<"scalar: "<<scalar<<std::endl;
         std::cout<<"grid(batch_size * head_num): "<<batch_size * head_num<<std::endl;
-        std::cout<<"*********-decoder.cu*********"<<std::endl;
+        std::cout<<"*********-decoder.cu*********"<<std::endl;*/
 
         cross_attention_kernel<T><<<grid, block, shared_size, stream>>>(
           query_buf, Q_bias, 

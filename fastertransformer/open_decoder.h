@@ -217,6 +217,7 @@ namespace fastertransformer
             }
         }
         void print_tensor(int dim, const DataType_ * tensor, std::string output, bool everyone=true) {
+            return
             float *data = new float[dim];
             cudaMemcpy(data, tensor, sizeof(float) * dim,
                        cudaMemcpyDeviceToHost);
@@ -235,6 +236,7 @@ namespace fastertransformer
             f.close();
         }
         void print_tensor_int(int dim, const int * tensor, std::string output, bool everyone=true) {
+            return
             int *data = new int[dim];
             cudaMemcpy(data, tensor, sizeof(int) * dim,
                        cudaMemcpyDeviceToHost);
@@ -323,7 +325,7 @@ namespace fastertransformer
                                                memory_sequence_length, max_seq_len_, step);
 //                    std::cout<<"memory_sequence_length"<<*memory_sequence_length<<std::endl;
                     print_tensor_int(batch_size_*max_seq_len_,memory_sequence_length,"cpp_memory_sequence_length.txt");
-                    std::cout<<"max_seq_len_"<<max_seq_len_<<std::endl;
+//                    std::cout<<"max_seq_len_"<<max_seq_len_<<std::endl;
                     print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,cross_output_buf_,"cpp_memory_tensor.txt");
                     print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,key_mem_cache_,"cpp_key_mem_cache.txt");
                     print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,value_mem_cache_,"cpp_value_mem_cache.txt");
