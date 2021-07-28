@@ -105,11 +105,11 @@ namespace fastertransformer
 #ifndef NDEBUG
             PRINT_FUNC_NAME_();
 #endif
-            std::cout<<"batch_size_ "<<batch_size<<std::endl;
+            /*std::cout<<"batch_size_ "<<batch_size<<std::endl;
             std::cout<<"max_seq_len_ "<<seq_len<<std::endl;
             std::cout<<"head_num_ "<<head_num<<std::endl;
             std::cout<<"size_per_head_ "<<size_per_head<<std::endl;
-            std::cout<<"memory_hidden_units_ "<<memory_hidden_units<<std::endl;
+            std::cout<<"memory_hidden_units_ "<<memory_hidden_units<<std::endl;*/
 
             hidden_units_ = head_num_ * size_per_head_;
 
@@ -129,7 +129,7 @@ namespace fastertransformer
                 is_fuse_QKV = fused_time < split_time * 3 ? true : false;
                 fclose(fd);
             }
-            printf("is_fuse_QKV: %d\n",is_fuse_QKV);
+//            printf("is_fuse_QKV: %d\n",is_fuse_QKV);
             if (err != 7)
             {
                 // printf("[WARNING] decoder loading GEMM algorithms error, using default GEMM algorithms!\n");
@@ -217,7 +217,7 @@ namespace fastertransformer
             }
         }
         void print_tensor(int dim, const DataType_ * tensor, std::string output, bool everyone=true) {
-            return;
+//            return;
             float *data = new float[dim];
             cudaMemcpy(data, tensor, sizeof(float) * dim,
                        cudaMemcpyDeviceToHost);
@@ -236,7 +236,7 @@ namespace fastertransformer
             f.close();
         }
         void print_tensor_int(int dim, const int * tensor, std::string output, bool everyone=true) {
-            return;
+//            return;
             int *data = new int[dim];
             cudaMemcpy(data, tensor, sizeof(int) * dim,
                        cudaMemcpyDeviceToHost);
