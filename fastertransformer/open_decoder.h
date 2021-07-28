@@ -233,7 +233,24 @@ namespace fastertransformer
             }
             f<<"sum: " << sum << ", mean: " << sum / dim << std::endl;
             f.close();
-//            std::cout << output << ", sum: " << sum << ", mean: " << sum / dim << std::endl;
+        }
+        void print_tensor_int(int dim, const int * tensor, std::string output, bool everyone=true) {
+            int *data = new int[dim];
+            cudaMemcpy(data, tensor, sizeof(int) * dim,
+                       cudaMemcpyDeviceToHost);
+            std::fstream f(output, std::ios::out);
+            //设置打印精度，保留小数点后面16位
+//            f.setf(std::ios::fixed);
+//            f.setf(std::ios::showpoint);
+//            f.precision(16);
+            int sum = 0;
+            for (int i = 0; i < dim; ++i) {
+                sum += data[i];
+                if(everyone)
+                    f<< data[i] << std::endl;
+            }
+            f<<"sum: " << sum << ", mean: " << sum*1.0 / dim << std::endl;
+            f.close();
         }
 
         void forward(const DataType_ *from_tensor, const DataType_ *memory_tensor,
@@ -304,7 +321,8 @@ namespace fastertransformer
                     cross_multi_head_attention(norm_masked_output_buf_, memory_tensor,
                                                key_mem_cache_, value_mem_cache_, cross_output_buf_,
                                                memory_sequence_length, max_seq_len_, step);
-                    std::cout<<"memory_sequence_length"<<*memory_sequence_length<<std::endl;
+//                    std::cout<<"memory_sequence_length"<<*memory_sequence_length<<std::endl;
+                    print_tensor_int(batch_size_*max_seq_len_,memory_sequence_length,"cpp_memory_sequence_length.txt");
                     std::cout<<"max_seq_len_"<<max_seq_len_<<std::endl;
                     print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,cross_output_buf_,"cpp_memory_tensor.txt");
                     print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,key_mem_cache_,"cpp_key_mem_cache.txt");
