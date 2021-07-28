@@ -360,6 +360,8 @@ namespace fastertransformer
                     check_cuda_error(cudaGetLastError());
 #endif
                     add_bias_input(decoder_output, cross_output_buf_, m, n);
+                    print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,cross_output_buf_,"cpp_cross_output_buf_last.txt");
+
                 }
                 else
                 {
