@@ -1188,6 +1188,7 @@ void cross_attention_dispatch(T* query_buf, const T* Q_bias,
     int cond = size_per_head * ((ATTENION_OPT)? 1:0);
     switch (cond)
     {
+        printf('case: %d\n',cond);
       case 32:
         cross_attention_kernel_opt<T, 32, block_sz><<<grid, block_sz, sizeof(float)*seq_len, stream>>>(
           query_buf, Q_bias, key_cache, K_bias, value_cache, V_bias, length, context_buf,  
