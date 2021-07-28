@@ -346,11 +346,15 @@ namespace fastertransformer
                                   param_.cross_attention.attention_output_weight.bias,
                                   cross_output_buf_,
                                   norm_cross_output_buf_, m, n);
+                    print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,norm_cross_output_buf_,"cpp_norm_cross_output_buf.txt");
+
 #ifndef NDEBUG
                     cudaDeviceSynchronize();
                     check_cuda_error(cudaGetLastError());
 #endif
                     ffn(norm_cross_output_buf_, ffn_inner_buf_, decoder_output, m, 4 * n, n, ActivationType::RELU);
+                    print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,decoder_output,"cpp_decoder_output.txt");
+
 #ifndef NDEBUG
                     cudaDeviceSynchronize();
                     check_cuda_error(cudaGetLastError());
