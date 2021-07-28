@@ -324,7 +324,7 @@ namespace fastertransformer
                                                key_mem_cache_, value_mem_cache_, cross_output_buf_,
                                                memory_sequence_length, max_seq_len_, step);
 //                    std::cout<<"memory_sequence_length"<<*memory_sequence_length<<std::endl;
-                    print_tensor_int(batch_size_*max_seq_len_,memory_sequence_length,"cpp_memory_sequence_length.txt");
+                    print_tensor_int(batch_size_,memory_sequence_length,"cpp_memory_sequence_length.txt");
 //                    std::cout<<"max_seq_len_"<<max_seq_len_<<std::endl;
                     print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,cross_output_buf_,"cpp_memory_tensor.txt");
                     print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,key_mem_cache_,"cpp_key_mem_cache.txt");
