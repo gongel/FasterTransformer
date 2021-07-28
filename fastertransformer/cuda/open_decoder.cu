@@ -1143,13 +1143,22 @@ void cross_attention_kernel(
     //The KV memory cache only need to be updated at the first step.
     if(step == 1 && tid < size_per_head)
     {
+      if(key + K_bias[head_id * size_per_head + tid] > 1000 || key + K_bias[head_id * size_per_head + tid] <-1000){
+          printf('key+k_bias: %f',key + K_bias[head_id * size_per_head + tid]);
+          printf('key+K_bias[head_id * size_per_head + tid]: %f',K_bias[head_id * size_per_head + tid]);
+          printf('tid: %d',tid);
+          printf('bid: %d',bid);
+          printf('head_id: %d',head_id);
+      }
       key += K_bias[head_id * size_per_head + tid];
       key_cache[key_id] = key;
     }
 
     T val = (tid < size_per_head) ? key * sq[tid] * scalar : (T)(0.0f);
     T qk = blockReduceSum(val);
-    print_tensor_new(batch_size*seq_len*head_num,qk,"cpp_qk.txt");
+//    printf('qk: %f\n',qk);
+//    printf('qk: %f\n',qk);
+//    print_tensor_new(batch_size*seq_len*head_num,qk,"cpp_qk.txt");
     if(threadIdx.x == 0)
       logits[ite] = qk;
     __syncthreads(); //try to remove
