@@ -1143,12 +1143,12 @@ void cross_attention_kernel(
     //The KV memory cache only need to be updated at the first step.
     if(step == 1 && tid < size_per_head)
     {
-      if(key + K_bias[head_id * size_per_head + tid] > 1000 || key + K_bias[head_id * size_per_head + tid] <-1000){
-          printf('key+k_bias: %f',key + K_bias[head_id * size_per_head + tid]);
-          printf('key+K_bias[head_id * size_per_head + tid]: %f',K_bias[head_id * size_per_head + tid]);
-          printf('tid: %d',tid);
-          printf('bid: %d',bid);
-          printf('head_id: %d',head_id);
+      if(1000 < (key + K_bias[head_id * size_per_head + tid]) || (key + K_bias[head_id * size_per_head + tid] <-1000)){
+          printf("key+k_bias: %f\n",key + K_bias[head_id * size_per_head + tid]);
+          printf("key+K_bias[head_id * size_per_head + tid]: %f\n",K_bias[head_id * size_per_head + tid]);
+          printf("tid: %d\n",tid);
+          printf("bid: %d\n",bid);
+          printf("head_id: %d\n",head_id);
       }
       key += K_bias[head_id * size_per_head + tid];
       key_cache[key_id] = key;
@@ -1224,11 +1224,11 @@ void cross_attention_dispatch(T* query_buf, const T* Q_bias,
           query_buf, Q_bias, key_cache, K_bias, value_cache, V_bias, length, context_buf,  
           batch_size, head_num, step, seq_len, scalar);
         break;
-      case 64:
-        cross_attention_kernel_opt<T, 64, block_sz><<<grid, block_sz, sizeof(float)*seq_len, stream>>>(
-          query_buf, Q_bias, key_cache, K_bias, value_cache, V_bias, length, context_buf,
-          batch_size, head_num, step, seq_len, scalar);
-        break;
+//      case 64:
+//        cross_attention_kernel_opt<T, 64, block_sz><<<grid, block_sz, sizeof(float)*seq_len, stream>>>(
+//          query_buf, Q_bias, key_cache, K_bias, value_cache, V_bias, length, context_buf,
+//          batch_size, head_num, step, seq_len, scalar);
+//        break;
       case 128:
         cross_attention_kernel_opt<T, 128, block_sz><<<grid, block_sz, sizeof(float)*seq_len, stream>>>(
           query_buf, Q_bias, key_cache, K_bias, value_cache, V_bias, length, context_buf,  
