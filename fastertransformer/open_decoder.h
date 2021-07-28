@@ -340,12 +340,17 @@ namespace fastertransformer
                         cross_output_buf_ + bias + masked_output_buf_ -> cross_output_buf_
                         norm(cross_otuput_buf) -> normed_last_context (input for ffn)
                     */
+
+                    print_tensor(head_num_*size_per_head_,param_.ffn_layernorm.gamma,"cpp_norm3_gamma.txt");
+                    print_tensor(head_num_*size_per_head_,param_.ffn_layernorm.beta,"cpp_norm3_beta.txt");
+
                     decoder_norm2(masked_output_buf_,
                                   param_.ffn_layernorm.gamma,
                                   param_.ffn_layernorm.beta,
                                   param_.cross_attention.attention_output_weight.bias,
                                   cross_output_buf_,
                                   norm_cross_output_buf_, m, n);
+
                     print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,norm_cross_output_buf_,"cpp_norm_cross_output_buf.txt");
 
 #ifndef NDEBUG
