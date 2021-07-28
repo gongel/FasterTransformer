@@ -1144,14 +1144,15 @@ void cross_attention_kernel(
     if(step == 1 && tid < size_per_head)
     {
       key += K_bias[head_id * size_per_head + tid];
-        if(1000 < key || key <-1000){
-            printf("key: %f\n",key);
-            printf("key+K_bias[head_id * size_per_head + tid]: %f\n",K_bias[head_id * size_per_head + tid]);
-            printf("tid: %d\n",tid);
-            printf("bid: %d\n",bid);
-            printf("head_id: %d\n",head_id);
-        }
+//        if(1000 < key || key <-1000){
+//            printf("key: %f\n",key);
+//            printf("key+K_bias[head_id * size_per_head + tid]: %f\n",K_bias[head_id * size_per_head + tid]);
+//            printf("tid: %d\n",tid);
+//            printf("bid: %d\n",bid);
+//            printf("head_id: %d\n",head_id);
+//        }
       key_cache[key_id] = key;
+      printf("key: %f\n",key);
     }
 
     T val = (tid < size_per_head) ? key * sq[tid] * scalar : (T)(0.0f);
