@@ -24,6 +24,9 @@
 #include <assert.h>
 #include <cuda_runtime.h>
 #include <cuda_fp16.h>
+#include <string>
+#include <iostream>
+#include <fstream>
 
 namespace fastertransformer
 {
@@ -207,6 +210,26 @@ public:
         }
     }
 
+    void print_tensor(int dim, const DataType_ * tensor, std::string output, bool everyone=true) {
+        float *data = new float[dim];
+        cudaMemcpy(data, tensor, sizeof(float) * dim,
+                   cudaMemcpyDeviceToHost);
+        std::fstream f(output, std::ios::out);
+        //设置打印精度，保留小数点后面16位
+        f.setf(std::ios::fixed);
+        f.setf(std::ios::showpoint);
+        f.precision(16);
+        float sum = 0.0f;
+        for (int i = 0; i < dim; ++i) {
+            sum += data[i];
+            if(everyone)
+                f<< data[i] << std::endl;
+        }
+        f<<"sum: " << sum << ", mean: " << sum / dim << std::endl;
+        f.close();
+//            std::cout << output << ", sum: " << sum << ", mean: " << sum / dim << std::endl;
+    }
+
     void forward(const DataType_ *from_tensor, const DataType_ *memory_tensor,
                  DataType_ *key_cache_, DataType_ *value_cache_,
                  DataType_ *key_mem_cache_, DataType_ *value_mem_cache_,
@@ -260,9 +283,16 @@ public:
 #endif
                 // For Attention is All You Need decoder
                 /* cross attention with memory */
+                print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,key_mem_cache_,"cpp_key_mem_cache_before_cross.txt");
+                print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,value_mem_cache_,"cpp_value_mem_cache_before_cross.txt");
                 cross_multi_head_attention(norm_masked_output_buf_, memory_tensor,
                                            key_mem_cache_, value_mem_cache_, cross_output_buf_,
                                            memory_sequence_length, max_seq_len_, step);
+                print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,cross_output_buf_,"cpp_memory_tensor.txt");
+                print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,key_mem_cache_,"cpp_key_mem_cache.txt");
+                print_tensor(batch_size_*max_seq_len_*head_num_*size_per_head_,value_mem_cache_,"cpp_value_mem_cache.txt");
+
+                print_tensor(batch_size_*1*head_num_*size_per_head_,cross_output_buf_,"cpp_cross_output_buf.txt");
 #ifndef NDEBUG
                 cudaDeviceSynchronize();
                 check_cuda_error(cudaGetLastError());
