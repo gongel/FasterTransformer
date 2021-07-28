@@ -1143,14 +1143,14 @@ void cross_attention_kernel(
     //The KV memory cache only need to be updated at the first step.
     if(step == 1 && tid < size_per_head)
     {
-      if(1000 < (key + K_bias[head_id * size_per_head + tid]) || (key + K_bias[head_id * size_per_head + tid] <-1000)){
-          printf("key+k_bias: %f\n",key + K_bias[head_id * size_per_head + tid]);
-          printf("key+K_bias[head_id * size_per_head + tid]: %f\n",K_bias[head_id * size_per_head + tid]);
-          printf("tid: %d\n",tid);
-          printf("bid: %d\n",bid);
-          printf("head_id: %d\n",head_id);
-      }
       key += K_bias[head_id * size_per_head + tid];
+        if(1000 < key || key <-1000)){
+            printf("key: %f\n",key);
+            printf("key+K_bias[head_id * size_per_head + tid]: %f\n",K_bias[head_id * size_per_head + tid]);
+            printf("tid: %d\n",tid);
+            printf("bid: %d\n",bid);
+            printf("head_id: %d\n",head_id);
+        }
       key_cache[key_id] = key;
     }
 
