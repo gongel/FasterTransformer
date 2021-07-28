@@ -1141,6 +1141,8 @@ void cross_attention_kernel(
 
     //For the first step, we should add bias to key memory cache.
     //The KV memory cache only need to be updated at the first step.
+      printf("step: %d\n",step);
+      printf("size_per_head: %d\n",size_per_head);
     if(step == 1 && tid < size_per_head)
     {
       key += K_bias[head_id * size_per_head + tid];
