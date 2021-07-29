@@ -359,6 +359,7 @@ namespace fastertransformer
                     cudaDeviceSynchronize();
                     check_cuda_error(cudaGetLastError());
 #endif
+                    print_tensor(batch_size_*1*head_num_*size_per_head_,decoder_output,"cpp_decoder_output_before.txt");
                     ffn(norm_cross_output_buf_, ffn_inner_buf_, decoder_output, m, 4 * n, n, ActivationType::RELU);
                     print_tensor(batch_size_*1*head_num_*size_per_head_,decoder_output,"cpp_decoder_output.txt");
 
