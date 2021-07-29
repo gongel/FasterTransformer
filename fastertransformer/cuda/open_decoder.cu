@@ -1722,7 +1722,12 @@ void OpenDecoder<OpType_>::ffn(
   DataType_ alpha = (DataType_)1.0f;
   DataType_ beta = (DataType_)0.0f;
 
-  check_cuda_error(cublasGemmEx(param_.cublas_handle, 
+  print_tensor(512*2048,param_.ffn.intermediate_weight.kernel,"cpp_ffn.intermediate_weight.kernel.txt");
+  print_tensor(2048,param_.ffn.intermediate_weight.bias,"cpp_ffn.intermediate_weight.bias.txt");
+  print_tensor(2048*512,param_.ffn.output_weight.kernel,"cpp_ffn.output_weight.kernel.txt");
+  print_tensor(512,param_.ffn.output_weight.kernel,"cpp_ffn.output_weight.bias.txt");
+
+    check_cuda_error(cublasGemmEx(param_.cublas_handle,
     CUBLAS_OP_N, CUBLAS_OP_N, 
     n1, m1, k1, 
     &alpha, 
