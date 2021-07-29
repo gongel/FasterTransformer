@@ -217,7 +217,7 @@ namespace fastertransformer
             }
         }
         void print_tensor(int dim, const DataType_ * tensor, std::string output, bool everyone=true) {
-            return;
+//            return;
             float *data = new float[dim];
             cudaMemcpy(data, tensor, sizeof(float) * dim,
                        cudaMemcpyDeviceToHost);
@@ -236,7 +236,7 @@ namespace fastertransformer
             f.close();
         }
         void print_tensor_int(int dim, const int * tensor, std::string output, bool everyone=true) {
-            return;
+//            return;
             int *data = new int[dim];
             cudaMemcpy(data, tensor, sizeof(int) * dim,
                        cudaMemcpyDeviceToHost);
